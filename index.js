@@ -12,7 +12,7 @@ fetchMyIP((error, ip) => {
 });
 */
 
-fetchCoordsByIP("173.246.138.29", (error, data) => {
+fetchCoordsByIP("9", (error, data) => {
   if (error) {
     console.log("It didn't work!", error);
     return;

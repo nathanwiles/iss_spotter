@@ -41,6 +41,10 @@ const fetchCoordsByIP = (ip, callback) => {
       // if successful, pass coordinates to callback
     } else if (response.statusCode === 200) {
       const data = JSON.parse(body);
+      if (!data.success) {
+        callback("IP address not found", null);
+        return;
+      }
       const latitude = data.latitude;
       const longitude = data.longitude;
       const coordinates = {
