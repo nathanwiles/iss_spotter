@@ -78,21 +78,21 @@ const fetchISSFlyOverTimes = function(coords, callback) {
   // use request to fetch flyover times from iss-flyover API
   request(url, (error, response, body) => {
   // on error, pass to callback
-  if (error) {
-    callback(error, null);
-    return;
-  // if non-200 status, assume server error and pass error to callback
-  } else if (response.statusCode !== 200) {
-    const msg = `Status Code ${response.statusCode} when attempting to fetch flyover times.`;
-    callback(Error(msg), null);
-    return;
+    if (error) {
+      callback(error, null);
+      return;
+      // if non-200 status, assume server error and pass error to callback
+    } else if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when attempting to fetch flyover times.`;
+      callback(Error(msg), null);
+      return;
     
-  // if successful, pass flyover times to callback
-  } else if (response.statusCode === 200) {
-    const data = JSON.parse(body);
-    const flyoverTimes = data.response;
-    callback(null, flyoverTimes);
-  }
+      // if successful, pass flyover times to callback
+    } else if (response.statusCode === 200) {
+      const data = JSON.parse(body);
+      const flyoverTimes = data.response;
+      callback(null, flyoverTimes);
+    }
   });
 };
 // export functions
