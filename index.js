@@ -10,7 +10,7 @@ fetchMyIP((error, ip) => {
 
 
 });
-*/
+
 
 fetchCoordsByIP("9", (error, data) => {
   if (error) {
@@ -20,3 +20,5 @@ fetchCoordsByIP("9", (error, data) => {
     console.log("It worked! Returned coordinates:", data);
   }
 });
+
+*/
