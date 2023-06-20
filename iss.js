@@ -1,3 +1,7 @@
+// Created by: Nathan Wiles
+// Part of ISS Spotter project
+
+
 // assign request to a variable
 const request = require("request");
 

@@ -1,3 +1,7 @@
+// Created by: Nathan Wiles
+// Part of ISS Spotter project
+
+
 const { nextISSTimesForMyLocation } = require("./iss");
 
 // function to retrieve and print flyover times
