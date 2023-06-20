@@ -3,3 +3,14 @@
 
 const request = require("request-promise-native");
 
+const ipifyURL = "https://api.ipify.org?format=json";
+const ipwhoisURL = "http://ipwho.is/";
+const issURL = "https://iss-flyover.herokuapp.com/json/?";
+
+// function to fetch IP address from ipify API
+const fetchMyIP = new Promise((resolve, reject) => {
+  return request(ipifyURL);
+});
+
+
+module.exports = { fetchMyIP };
