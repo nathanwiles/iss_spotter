@@ -61,7 +61,7 @@ const fetchCoordsByIP = (ip, callback) => {
 };
 
 // function to fetch flyover times from iss-flyover API
-const fetchISSFlyOverTimes = function (coords, callback) {
+const fetchISSFlyOverTimes = (coords, callback) => {
   // build query url and assign to variable
   const latLonQString = "lat=" + coords.latitude + "&lon=" + coords.longitude;
   const url = "https://iss-flyover.herokuapp.com/json/?" + latLonQString;
@@ -87,7 +87,7 @@ const fetchISSFlyOverTimes = function (coords, callback) {
 };
 
 // function to fetch next ISS flyover times for my location
-nextISSTimesForMyLocation = (callback) => {
+const nextISSTimesForMyLocation = (callback) => {
   fetchMyIP((error, ip) => {
     // check for error in fetchMyIP
     if (error) {
