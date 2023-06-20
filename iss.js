@@ -95,7 +95,7 @@ const nextISSTimesForMyLocation = (callback) => {
       return;
     } else {
       // if no error, fetch coordinates by IP
-      console.log("IP fetch successfull");
+      console.log("IP fetch successful");
       fetchCoordsByIP(ip, (error, data) => {
         // check for error in fetchCoordsByIP
         if (error) {
@@ -103,21 +103,19 @@ const nextISSTimesForMyLocation = (callback) => {
           return;
         } else {
           // if no error, fetch flyover times
-          console.log("Coordinates fetch successfull");
+          console.log("Coordinates fetch successful");
           // destructure latitude and longitude from data object
           const { latitude, longitude } = data;
           // pass latitude and longitude to fetchISSFlyOverTimes
           fetchISSFlyOverTimes({ latitude, longitude }, (error, data) => {
+            // check for error in fetchISSFlyOverTimes
             if (error) {
-              console.log("It didn't work!", error);
+              callback(error, null);
               return;
             } else {
+              // if data is present, pass flyover times to callback
               if (data) {
-                console.log("It worked! Returned flyover times:");
-
-                for (const i in data) {
-                  console.log(data[i]);
-                }
+                callback(null, data);
               }
             }
           });
