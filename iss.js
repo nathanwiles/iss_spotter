@@ -1,7 +1,7 @@
 // assign request to a variable
 const request = require("request");
 
-// function to fetch IP address from API
+// function to fetch IP address from ipify API
 const fetchMyIP = (callback) => {
   // use request to fetch IP address from ipify API
   request("https://api.ipify.org?format=json", (error, response, body) => {
@@ -24,7 +24,7 @@ const fetchMyIP = (callback) => {
     }
   });
 };
-
+// function to fetch coordinates from ipwhois API
 const fetchCoordsByIP = (ip, callback) => {
   const url = `http://ipwho.is/${ip}`;
   //use request to fetch coordinates from ipwhois API
@@ -60,24 +60,14 @@ const fetchCoordsByIP = (ip, callback) => {
   });
 };
 
-
-/**
- * Makes a single API request to retrieve upcoming ISS fly over times the for the given lat/lng coordinates.
- * Input:
- *   - An object with keys `latitude` and `longitude`
- *   - A callback (to pass back an error or the array of resulting data)
- * Returns (via Callback):
- *   - An error, if any (nullable)
- *   - The fly over times as an array of objects (null if error). Example:
- *     [ { risetime: 134564234, duration: 600 }, ... ]
- */
-const fetchISSFlyOverTimes = function(coords, callback) {
+// function to fetch flyover times from iss-flyover API
+const fetchISSFlyOverTimes = function (coords, callback) {
   // build query url and assign to variable
   const latLonQString = "lat=" + coords.latitude + "&lon=" + coords.longitude;
   const url = "https://iss-flyover.herokuapp.com/json/?" + latLonQString;
   // use request to fetch flyover times from iss-flyover API
   request(url, (error, response, body) => {
-  // on error, pass to callback
+    // on error, pass to callback
     if (error) {
       callback(error, null);
       return;
@@ -86,7 +76,7 @@ const fetchISSFlyOverTimes = function(coords, callback) {
       const msg = `Status Code ${response.statusCode} when attempting to fetch flyover times.`;
       callback(Error(msg), null);
       return;
-    
+
       // if successful, pass flyover times to callback
     } else if (response.statusCode === 200) {
       const data = JSON.parse(body);
@@ -95,5 +85,46 @@ const fetchISSFlyOverTimes = function(coords, callback) {
     }
   });
 };
+
+// function to fetch next ISS flyover times for my location
+nextISSTimesForMyLocation = (callback) => {
+  fetchMyIP((error, ip) => {
+    // check for error in fetchMyIP
+    if (error) {
+      console.log("IP fetch didn't work!", error);
+      return;
+    } else {
+      // if no error, fetch coordinates by IP
+      console.log("IP fetch successfull");
+      fetchCoordsByIP(ip, (error, data) => {
+        // check for error in fetchCoordsByIP
+        if (error) {
+          console.log("It didn't work!", error);
+          return;
+        } else {
+          // if no error, fetch flyover times
+          console.log("Coordinates fetch successfull");
+          // destructure latitude and longitude from data object
+          const { latitude, longitude } = data;
+          // pass latitude and longitude to fetchISSFlyOverTimes
+          fetchISSFlyOverTimes({ latitude, longitude }, (error, data) => {
+            if (error) {
+              console.log("It didn't work!", error);
+              return;
+            } else {
+              if (data) {
+                console.log("It worked! Returned flyover times:");
+
+                for (const i in data) {
+                  console.log(data[i]);
+                }
+              }
+            }
+          });
+        }
+      });
+    }
+  });
+};
 // export functions
-module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes};
+module.exports = { nextISSTimesForMyLocation };
