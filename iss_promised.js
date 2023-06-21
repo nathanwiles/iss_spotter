@@ -19,6 +19,7 @@ const fetchCoordsByIP = (body) => {
   return request(ipwhoisURL + ip);
 }
 
+// function to fetch flyover times from iss-flyover API
 const fetchISSFlyOverTimes = (body) => {
   const data = JSON.parse(body);
   const latitude = data.latitude;
@@ -26,5 +27,17 @@ const fetchISSFlyOverTimes = (body) => {
   return request(issURL + "lat=" + latitude + "&lon=" + longitude);
 }
 
+const nextISSTimesForMyLocation = () => {
+  return fetchMyIP()
+  .then((body) => fetchCoordsByIP(body))
+  .then(body => fetchISSFlyOverTimes(body))
+  .then(body => {
+    const bodyObj = JSON.parse(body);
+    const flyoverTimes = bodyObj.response;
+    return flyoverTimes;
+  })
+}
 
-module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes};
+
+
+module.exports = { nextISSTimesForMyLocation };
